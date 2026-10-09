@@ -1,89 +1,64 @@
-# Offline demo and acceptance
+# Current demo acceptance
 
-Status: checklist only; every runtime check is Not run.
+The [two-scenario runbook](../demo/DEMO_RUNBOOK.md) is the current demo sequence.
+Earlier sensor/event acceptance reports are historical, not requirements for this
+face-only presentation. See [technical overview](TECHNICAL_OVERVIEW.md).
 
-## Conditions
+## Evidence already available
 
-All packages, models and UI assets must be present before disconnecting. Use the
-laptop webcam and a cable-connected external display. Disable Wi-Fi and disconnect
-Ethernet/mobile tethering. Do not use Wokwi as a core runtime dependency. Stop and
-restart both the application and Ollama while disconnected; an already-warm
-browser tab is not sufficient startup evidence. Verify cloud features are disabled
-and the model is already local; a template fallback does not prove Qwen inference.
+- Owner screenshots: genuine live camera/person inference, saved face preview,
+  rejected comparisons and a Family member result at distance 53.70 versus 65.
+- Automated audit: backend/frontend regression, production/static builds, static
+  markup, bundle invariants and documentation links. Recognition tests actually
+  train/predict LBPH on synthetic textures; they do not measure human accuracy.
+- Earlier local Qwen runs: four supported fact selections worked; model-only
+  identity abstention failed and is constrained by application guards.
 
-## Ordered acceptance
+## Remaining owner live checks
 
-| Check | Required evidence | Current result |
-| --- | --- | --- |
-| Local startup | App and assets load after restart without external connections | Not run |
-| Fresh camera input | New webcam frames visibly produce actual model results | Not run |
-| Local Qwen call | Fresh request reaches loopback Ollama and returns genuine Qwen3 0.6B output after offline restart | Not run |
-| Explanation grounding | Distinct supplied events/questions preserve facts and provenance; missing evidence is explicit | Not run |
-| LLM failure handling | Missing model, daemon failure, timeout and invalid output trigger labelled fallback without blocking alerts | Not run |
-| LLM configuration | Actual model digest, cloud-disabled configuration, bounded context/output and thinking disabled recorded | Not run |
-| Supported observations | Selected face/body/object outputs checked on fresh attempts | Not run |
-| Sensor provenance | Simulated input controls and derived events remain labelled | Not run |
-| Orange event | Defined repeated-bell/occupancy rule fires with recorded evidence | Not run |
-| Red event | Corroborated simulated impact/contact rule fires with recorded evidence | Not run |
-| Availability | Camera/model failure produces explicit unavailable state | Not run |
-| Severity persistence | Urgent sensor event stays visible during video failure | Not run |
-| Local evidence | Actual saved media can be replayed/deleted; missing media is explicit | Not run |
-| Feedback | Explicit resident labels save locally without a claim of automatic retraining | Not run |
-| External requests | Inspect runtime requests/connections; no external dependency in core workflow | Not run |
-| Performance | Record vision/Qwen cold and warm latency, combined memory, responsiveness and stale-response handling on M1 8 GB | Not run |
-| GitHub reproduction | Actual adapter/prompts/schema/checks and local setup instructions recreate inference; model/asset disclosures included | Not run |
-| Model quality | Record misses/false alerts on distinct normal and staged-event examples | Not run |
-| Display usability | Actual external-screen layout, readable states and working controls | Not run |
+Record actual result and evidence for each item; do not mark it passed from source.
 
-Observations and measurements must reflect the actual implementation. Do not use
-fake benchmarks, prerecorded predictions, invented model scores or simulated
-sensor events presented as camera-detected activities. A short demo does not
-establish reliable 24/7 protection or a measured probability of danger.
+1. **Current interface:** rebuilt/refreshed console shows the parent toggle,
+   camera banner and one AI Analysis view, with no activity controls or tabs.
+2. **Family enrollment:** save a clear single face, preview the real image, move
+   away/return and observe fresh accepted/rejected comparisons and displayed reasons.
+3. **Unknown/deletion:** delete the example; subsequent fresh face becomes Unknown,
+   example count becomes zero and no old/in-flight match reappears. Restart confirms deletion.
+4. **Parent mode:** off gives recognition only; on gives family parent-check or
+   unknown/unclear keep-closed guidance. Stop/reset disables mode and preserves enrollment.
+5. **Limited evidence:** no/multiple/occluded/stale faces cannot display a valid
+   current match or retain an old score. Camera failure remains explicit.
+6. **Automatic text analysis:** fresh changed evidence yields actual local Qwen
+   findings with provenance. A missing/unavailable model shows fallback while
+   camera analysis and parent controls remain responsive; no stale text replaces new results.
+7. **Offline restart:** provision assets first, disconnect external networking,
+   restart both console and Ollama, then repeat fresh camera/family/unknown steps.
+   Inspect requests/connections separately; a warm tab is not startup evidence.
+8. **Performance/display:** measure combined camera/Qwen latency, memory and
+   responsiveness on M1 8 GB; check actual external-screen readability and controls.
+9. **Reproduction/submission:** check startup from documented dependencies/assets,
+   disclosures and actual public repository/demo/social URLs. Publication and
+   submission require separate confirmation.
 
-## Demonstration sequence
+The final banner/toggle/automatic-analysis live trial, disconnected restart,
+traffic inspection and human recognition evaluation remain pending. A successful
+single demo match does not establish a recognition rate or security effectiveness.
 
-1. Show disconnected networking and launch the application.
-2. Start monitoring and enter the webcam view; show live local inference.
-3. Demonstrate only validated visible facial/body/object observations.
-4. Press the labelled simulated doorbell repeatedly; show the orange event reason
-   and a genuine Qwen explanation grounded in those inputs. Show actual model
-   identity/timing in diagnostics and ask a question about that local event.
-5. Trigger labelled impact/contact events; show the red event and supporting inputs.
-6. Demonstrate a camera outage while preserving the urgent event.
-7. Acknowledge, review available local evidence and record explicit feedback.
+`scripts/acceptance.py init` prepares the current face-demo observation checklist
+with every outcome initially not run. It writes only to ignored `.runtime/` and
+does not open the camera or test the app. Use a new observations filename if an
+earlier report already exists; old v1 reports remain explicitly historical.
+`scripts/reproduction_check.py` checks local source/assets for the face-only demo;
+a passing inventory does not establish clean-machine or offline reproduction.
 
-The recording may be concise, but the software must remain interactive for a
-potential live finalist demonstration. Actual unimplemented steps should be
-removed from the recording or identified as roadmap work.
+## Hackathon requirements
 
-## Suggested disclosure, to amend to actual delivered capabilities
+The supplied AppBuildersPH Hackathon 2026 Participant Briefing requires meaningful
+local inference, a working product, model/tool disclosure and substantially
+hackathon-built work (page 9). It specifies a five-minute finalist pitch plus
+three-minute Q&A (page 15), repository/demo/social-video submission requirements
+and 2026-10-10 10:00 AM Philippine-time deadline/code freeze (pages 16, 24–25).
+An on-site representative and laptop are required for finalists (page 26); public
+live deployment is unnecessary with recreation instructions (page 28).
 
-> This prototype uses the laptop webcam in place of the planned ESP32 door camera.
-> Vision inference and event processing run locally on an Apple M1 laptop.
-> Qwen3 0.6B via local Ollama explains structured events; it does not inspect
-> camera images or determine alert severity. Templates handle LLM failures.
-> Doorbell, vibration and door-contact events are simulated and labelled.
-> The core console operates without internet after dependencies and assets are
-> prepared. Physical ESP32 integration and reinforcement learning are future work.
-
-If model integrations do not all work, list exactly which ones run. Do not claim
-ESP32 emulation unless firmware actually runs in an emulator. Do not claim AI
-runs on the ESP32 when it runs on the laptop.
-
-## Hackathon requirements from supplied briefing
-
-Source: AppBuildersPH Hackathon 2026 Participant Briefing.pdf (supplied by the participant; local reference under private/reference/)
-
-- Page 9: working product, meaningful local inference, substantially built during
-  the hackathon, and disclosed models/tools.
-- Page 15: finalist pitch and live demo, five minutes plus three minutes Q&A.
-- Pages 16/24/25: demo video, required X or LinkedIn video post with stated tags,
-  public GitHub repository and disclosures; submission deadline is 2026-10-10
-  10:00 AM Philippine time, one submission, deadline code freeze.
-- Page 26: finalists need an on-site representative and laptop.
-- Page 28: public live deployment is unnecessary if recreation instructions exist.
-- Hardware-simulation eligibility is not explicitly settled; organiser
-  clarification remains pending. Do not represent it as approved.
-
-Submission/publication requires internet separately. Repository setup is separate
-from submitting an entry; no demo video, social post or hackathon submission exists yet.
+Keep the private briefing outside Git. Prepared files do not prove submission.

@@ -1,0 +1,12 @@
+# Candidate pins for Python 3.12 / macOS ARM64; owner setup generates the full hash lock.
+fastapi==0.143.0
+uvicorn==0.54.0
+httpx==0.28.1
+# 0.10.21 is a pre-telemetry-report candidate, not proof of zero network activity.
+mediapipe==0.10.21
+# Exactly one package provides cv2; newer OpenCV releases require NumPy 2.
+opencv-contrib-python==4.11.0.86
+numpy==1.26.4
+# MediaPipe declares these dependencies; constrain them to the NumPy 1 ABI family.
+jax==0.4.35
+jaxlib==0.4.35

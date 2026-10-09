@@ -1,0 +1,39 @@
+{
+  "status": "local assets verified; genuine vision and four supported Qwen v3 examples measured; model-only identity abstention failed; application guards unsupported questions; offline acceptance pending",
+  "target": {
+    "os": "macOS 14+",
+    "arch": "arm64",
+    "python": "3.12",
+    "node": "22.12+"
+  },
+  "ollama": {
+    "version": "0.40.1",
+    "release_api": "https://api.github.com/repos/ollama/ollama/releases/tags/v0.40.1",
+    "archive": "ollama-darwin.tgz",
+    "acquired_archive_bytes": 167470715,
+    "acquired_archive_sha256": "66e1587711f3a06315b23782ba74897001da6c8b8edf6c0371f7533015a076dd",
+    "licence": "MIT",
+    "source": "https://github.com/ollama/ollama/releases/tag/v0.40.1"
+  },
+  "qwen": {
+    "name": "qwen3:0.6b",
+    "manifest_url": "https://registry.ollama.ai/v2/library/qwen3/manifests/0.6b",
+    "published_digest_prefix": "7df6b6e09427",
+    "acquired_manifest_sha256": "7df6b6e09427a769808717c0a93cadc4ae99ed4eb8bf5ca557c90846becea435",
+    "acquired_layer_bytes": 522653767,
+    "published_bytes_approx": 523000000,
+    "licence": "Apache-2.0",
+    "source": "https://ollama.com/library/qwen3:0.6b"
+  },
+  "vision": {
+    "name": "EfficientDet-Lite0 int8",
+    "version": "1",
+    "url": "https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/int8/1/efficientdet_lite0.tflite",
+    "filename": "efficientdet_lite0.int8.v1.tflite",
+    "publisher_sha256": null,
+    "acquired_bytes": 4602795,
+    "acquired_sha256": "0720bf247bd76e6594ea28fa9c6f7c5242be774818997dbbeffc4da460c723bb",
+    "licence_status": "asset-specific licence confirmation pending; do not infer from package licence",
+    "source": "https://developers.google.com/edge/mediapipe/solutions/vision/object_detector"
+  }
+}

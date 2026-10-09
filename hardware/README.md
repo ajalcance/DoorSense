@@ -1,9 +1,10 @@
-# Hardware
+# Hardware roadmap
 
-Physical integration is future work. The prototype uses the laptop webcam and
-labelled simulated door sensors. No firmware or emulator is implemented here yet.
+The current DoorSense demo uses a laptop webcam and local computer inference.
+No physical door sensors, firmware, emulator, lock or external CCTV integration
+is implemented. Sensors and activity simulations are excluded from the demo.
 
-The planned ESP32 camera supplies images over local Wi-Fi without an internet
-uplink; the laptop/local hub performs vision and language inference. Future
-firmware must share the documented frame/sensor contracts and be validated on the
-actual board. See [physical integration plan](../WORKING_PLAN.md).
+A supported doorway camera feed is future work. The laptop/local hub would
+perform vision and text inference; deployment needs device authentication,
+privacy controls and validation on the actual equipment. See the
+[focused roadmap](../docs/TECHNICAL_OVERVIEW.md).

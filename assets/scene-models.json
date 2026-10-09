@@ -1,0 +1,16 @@
+{
+  "face": {
+    "name": "MediaPipe Face Landmarker float16 v1",
+    "filename": "face_landmarker.float16.v1.task",
+    "url": "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+    "source": "https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker",
+    "licence_status": "Asset-specific licence confirmation pending; documentation/sample licence is not a weight licence."
+  },
+  "pose": {
+    "name": "MediaPipe Pose Landmarker lite float16 v1",
+    "filename": "pose_landmarker_lite.float16.v1.task",
+    "url": "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
+    "source": "https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker",
+    "licence_status": "Asset-specific licence confirmation pending; documentation/sample licence is not a weight licence."
+  }
+}

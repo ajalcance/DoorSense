@@ -12,6 +12,7 @@ venv/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.runtime/
 *.egg-info/
 
 # Frontend build and dependency output
@@ -20,6 +21,7 @@ dist/
 coverage/
 
 # Local configuration and credentials
+.codex/
 .env
 .env.*
 !.env.example
@@ -34,6 +36,10 @@ logs/
 *.log
 *.sqlite
 *.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite3-shm
+*.sqlite3-wal
 *.db
 *.db-shm
 *.db-wal

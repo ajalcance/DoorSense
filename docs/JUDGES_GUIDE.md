@@ -1,5 +1,27 @@
 # Judge guide
 
+## Current submission and demo
+
+Use the [technical overview](TECHNICAL_OVERVIEW.md) for the stack, working features,
+evidence and short roadmap, and the [submission draft](../demo/SUBMISSION_DRAFT.md)
+for approved product copy and form-ready technical disclosures. These supersede
+the historical sensor workflow below.
+
+The current demo uses one parent-enrolled family appearance reference, local
+face comparison, parent-controlled Child safety mode, live camera banners and
+one automatic AI Analysis view. EfficientDet/Face Landmarker provide camera
+findings; OpenCV LBPH trains and compares locally; Qwen selects supplied facts
+through local Ollama. The application provides child guidance. No sensor activity
+is required or enabled in production.
+
+Owner screenshots show an accepted family match at 53.70 against threshold 65
+and other rejected comparisons. These are individual observations, not an accuracy
+benchmark. Automated regression/build/static checks pass; final live UI and
+fully disconnected startup acceptance remain pending. Learning is supervised
+enrollment, not RL. A family match does not grant permission to open the door.
+
+## Historical guide (earlier sensor/event demo)
+
 ## What DoorSense aims to solve
 
 A door camera shows a scene; DoorSense aims to help residents understand the event
@@ -17,12 +39,17 @@ designed to remain available without internet after provisioning.
 
 ## Code navigation
 
-The initial commit contains documentation and scaffolding. Application code is
-pending. Its planned homes are [backend](../backend/README.md),
-[frontend](../frontend/README.md) and [hardware](../hardware/README.md).
-The backend local LLM adapter will expose the real loopback API call, prompts,
-validation and fallback. Prepared diagrams or illustrative outputs are not
-model-inference evidence.
+The checkout contains [camera code](../backend/doorsense/camera.py),
+[local vision](../backend/doorsense/vision.py) and a
+[bounded Qwen adapter](../backend/doorsense/local_llm.py), with prompts/schema,
+validation, labelled fallback and application question guards. Evidence is in
+[camera spike](CAMERA_SPIKE.md) and [Qwen spike](LLM_SPIKE.md). Four supported Qwen
+examples worked; model-only identity abstention failed. Unsupported questions are
+handled by the application; displayed wording remains original facts/template.
+Console/events/storage are implemented through Slice 7; physical hardware and
+full integrated/offline acceptance are pending. [MVP audit](MVP_READINESS.md). This dirty checkout
+has not been committed/pushed in this session; remote reproduction is unverified.
+Diagrams/fixtures are not genuine model evidence.
 
 ## What the demo must establish
 

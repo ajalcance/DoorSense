@@ -1,0 +1,23 @@
+# Project defaults. Select this profile in a fresh Codex session and verify it.
+# Do not combine permission profiles with legacy sandbox_mode settings.
+default_permissions = "doorsense"
+approval_policy = "never"
+
+[features]
+hooks = true
+
+[permissions.doorsense]
+description = "DoorSense and temporary files only; command network disabled."
+
+[permissions.doorsense.filesystem]
+":root" = "read"
+":slash_tmp" = "write"
+":tmpdir" = "write"
+"/Users/anymind/Documents/ChatGPT/Albert Space 2/Hackathon/DoorSense" = "write"
+"/Users/anymind/Documents/ChatGPT/Albert Space 2/Hackathon/DoorSense/.git" = "read"
+"/Users/anymind/Documents/ChatGPT/Albert Space 2/Hackathon/DoorSense/.codex" = "read"
+"/Users/anymind/Documents/ChatGPT/Albert Space 2/Hackathon/DoorSense/.agents" = "read"
+"/Users/anymind/Documents/ChatGPT/Albert Space 2/Hackathon/DoorSense/.aws" = "read"
+
+[permissions.doorsense.network]
+enabled = false

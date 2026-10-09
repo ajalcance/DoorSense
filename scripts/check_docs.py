@@ -7,7 +7,7 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-SKIP = {".git", "node_modules", ".venv", "private", "data", "recordings", "dist"}
+SKIP = {".git", ".runtime", "node_modules", ".venv", "private", "data", "recordings", "dist"}
 LINK = re.compile(r"\[[^\]]*\]\((<[^>]+>|[^\s)]+)(?:\s+[^)]*)?\)")
 
 
@@ -16,7 +16,8 @@ def main():
     links = 0
     documents = 0
     for path in sorted(ROOT.rglob("*.md")):
-        if SKIP.intersection(path.relative_to(ROOT).parts):
+        parts = path.relative_to(ROOT).parts
+        if SKIP.intersection(parts) or parts[:2] == ("assets", "models"):
             continue
         documents += 1
         for raw in LINK.findall(path.read_text(encoding="utf-8")):

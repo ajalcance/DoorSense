@@ -1,0 +1,1 @@
+"""Local DoorSense prototype components."""

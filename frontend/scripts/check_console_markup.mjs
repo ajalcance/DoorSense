@@ -1,0 +1,110 @@
+// Test-only synthetic input packets; never imported by the production bundle.
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import assert from 'node:assert/strict';
+import ConsoleView from '../.runtime/console-render/ConsoleView.js';
+import {questions} from '../src/contracts.js';
+const actions = new Proxy({}, {get: () => () => {}});
+const base = {view:'overview',panel:null,camera:'paused',severity:null,title:'Monitoring paused',facts:[],question:questions[0],status:{release_completed:true,diagnostics:{},demo_mode:"legacy_activity"},busy:false};
+const render = changes => renderToStaticMarkup(React.createElement(ConsoleView,{model:{...base,...changes},actions}));
+let checks = 0;
+const check = (label, fn) => {fn(); checks++;};
+check('paused controls', () => {const html=render({}); assert(!/aria-label="Start monitoring"[^>]*disabled/.test(html)); assert(/aria-label="Stop monitoring"[^>]*disabled/.test(html));});
+check('service unavailable controls', () => {const html=render({status:null,camera:'unknown'}); assert(/aria-label="Start monitoring"[^>]*disabled/.test(html));});
+check('no synthetic presentation or Inputs overlay trigger', () => {const html=render({}); assert(!html.includes('UI fixture')); assert(!html.includes('>Demo<')); assert(!html.includes('>Inputs<')); assert(html.includes('Face learning demo'));});
+check('paused camera guidance', () => {assert(render({}).includes('Start monitoring from the toolbar.'));});
+check('no history invention', () => {const html=render({view:'events',history:{events:[],total:0}}); assert(html.includes('No events yet')); assert(!html.includes('class="event-record '));});
+for (const camera of ['starting','monitoring','stopping','unavailable']) check(`camera ${camera}`, () => {assert(render({camera}).includes(`Webcam · ${camera}`));});
+const event={id:'a'.repeat(32),revision:1,rule_id:'impact_contact',severity:'urgent',rule_reason:'Simulated impacts and contact.',created_at:'2026-10-09T14:00:00Z',expires_at:'2026-10-09T14:02:00Z',facts:[{text:'Three simulated impacts.',source:'simulated_sensor',observed_at:'2026-10-09T14:00:00Z'}],media:[],feedback:null};
+const alert={selected:event,severity:'urgent',title:'Urgent review',facts:event.facts.map(f=>f.text),status:{release_completed:true,diagnostics:{},event,armed:true,demo_mode:'legacy_activity'},camera:'unavailable'};
+check('urgent with camera loss', () => {const html=render(alert); assert(html.includes('Urgent review')); assert(html.includes('Webcam · unavailable')); assert(html.includes('simulated_sensor'));});
+check('overview remains compact', () => {const html=render(alert); assert(html.includes('Event details · media')); assert(!html.includes('id="feedback"'));});
+check('history preserves current urgency', () => {const html=render({...alert,view:'events',selectedEvent:event.id,history:{events:[event],total:1,offset:0,next_offset:null}}); assert(html.includes('Saved event · historical severity')); assert(html.includes('Active urgent')); assert(html.includes('Webcam unavailable'));});
+check('unknown feedback and absent replay', () => {const html=render({...alert,view:'events'}); assert(html.includes('Unknown · no feedback')); assert(!html.includes('View snapshot'));});
+check('media capture unavailable without fresh frame', () => {const html=render({...alert,view:'events'}); assert(/disabled="">Save current snapshot/.test(html));});
+check('existing media provides real controls', () => {const html=render({...alert,view:'events',selected:{...event,media:[{id:'media',kind:'snapshot',created_at:event.created_at}]}}); assert(html.includes('View snapshot')); assert(html.includes('Delete media'));});
+check('replay labelled separately', () => {const html=render({media:{id:'media',kind:'clip',frames:[{image:'synthetic-test-pixels',captured_at:event.created_at}]}}); assert(html.includes('Recorded webcam')); assert(html.includes('no inference on replay')); assert(html.includes('Play clip'));});
+check('acknowledgement retains event', () => {const html=render({...alert,ack:true}); assert(html.includes('Urgent review')); assert(/disabled="">Acknowledged/.test(html));});
+check('storage failure is explicit', () => {const html=render({...alert,status:{...alert.status,storage_error:'Test-only storage error'},selected:{...event,persisted:false}}); assert(html.includes('Test-only storage error')); assert(html.includes('Session only · not persisted'));});
+for (const [source,label] of Object.entries({qwen_evidence_selection:'Qwen-selected evidence',template_fallback:'Template fallback',application_unavailable:'Application unavailable',discarded:'Superseded response discarded'})) check(`source ${source}`, () => {assert(render({answer:{source,text:'Injected test answer'}}).includes(label));});
+check('diagnostics overlay', () => {const html=render({panel:'diagnostics'}); assert(html.includes('role="dialog"')); assert(html.includes('aria-label="Close panel"'));});
+check('recording stop remains global', () => {assert(render({...alert,view:'events',status:{...alert.status,recording:{event_id:event.id,seconds:1}}}).includes('Stop &amp; save clip'));});
+console.log(`PASS: ${checks} static markup checks; test-only packets, no browser, device, model or network.`);
+check('interactive analysis tabs and keyboard affordance', () => {const html=render({}); assert(html.includes('role="tablist"')); assert(html.includes('aria-selected="true"')); assert(html.includes('id="analysis-qwen"')); assert(html.includes('id="analysis-evidence"')); assert(html.includes('Local AI workspace'));});
+check('paused metrics contain no invented confidence', () => {const html=render({}); assert(html.includes('Detector score')); assert(html.includes('People detected')); assert(!html.includes('100%'));});
+const frame={image:'test-only',width:640,height:480,people:[{box:[10,10,100,200],score:.83}],objects:[],facts:[{id:'person',text:'Test-only observation.'}],inference_ms:37,sequence:1,captured_at:event.created_at,features:{face:{state:'unavailable',message:'Test-only missing model.'}}};
+check('actual detector score and latency shown', () => {const html=render({frame,camera:'monitoring'}); assert(html.includes('83%')); assert(html.includes('37')); assert(html.includes('Person 1')); assert(html.includes('identity unverified')); assert(!html.includes('Friendly'));});
+check('camera HUD severity comes from actual event', () => {const html=render({...alert,frame,camera:'monitoring'}); assert(html.includes('camera-hud urgent')); assert(html.includes('Urgent review'));});
+check('missing scene model stays visible', () => {const html=render({frame,camera:'monitoring'}); assert(html.includes('Facial movement · unavailable')); assert(html.includes('Test-only missing model.'));});
+check('historical event labels live metrics explicitly', () => {const html=render({...alert,selectedEvent:event.id,frame,view:'events'}); assert(html.includes('Saved event facts · live metrics above'));});
+console.log(`PASS: ${checks} total static markup checks, including scene dashboard; no rendered-browser acceptance.`);
+check('available face never claims identity or friendliness', () => {const data={...frame,features:{face:{state:'available',descriptions:[],message:'Prototype.'}}}; const html=render({frame:data}); assert(html.includes('Face analysis available · identity unverified')); assert(!html.includes('Recognized parent'));});
+check('limited face requests parent review without threat label', () => {const data={...frame,features:{face:{state:'limited',descriptions:[],message:'Partial view.'}}}; const html=render({frame:data}); assert(html.includes('Face analysis limited · ask a parent before opening')); assert(!html.includes('Suspicious person'));});
+check('guardian warning survives loss of camera on overview', () => {const html=render(alert); assert(html.includes('Ask a parent. Check the door before approaching.')); assert(html.includes('active-alert urgent'));});
+check('expected visitor is explicitly a manually annotated snapshot', () => {const confirmation={label:'Family member',sequence:1,captured_at:event.created_at};const html=render({confirmation}); assert(html.includes('Visitor snapshot · parent-confirmed category')); assert(html.includes('not recognition of later live frames'));});
+console.log(`PASS: ${checks} total static markup checks with family-demo provenance.`);
+console.log(`PASS: ${checks} total static markup checks including snapshot readiness.`);
+const simulation = {contact:{kind:'contact_closed',observed_at:event.created_at},replies:[{kind:'impact',accepted:true,armed:true,observed_at:event.created_at}],progress:{bell:{count:0,required:3,remaining_seconds:0},impact:{count:3,required:3,remaining_seconds:4}},occupancy:{elapsed_seconds:0,required_seconds:30,remaining_seconds:30,fresh:false}};
+check('Events uses history workspace and Overview restores controls', () => {const html=render({view:'events',history:{events:[],total:0}}); assert(html.includes('history-workspace')); assert(!html.includes('simulation-column')); assert(render({}).includes('simulation-column'));});
+console.log(`PASS: ${checks} total static markup checks including simulation console.`);
+check('child warning matches the current door state after an alert', () => {
+  const closed=render({...alert,simulation}); assert(closed.includes('Keep the door closed. Ask a parent before opening.'));
+  const opened=render({...alert,simulation:{...simulation,contact:{kind:'contact_open',observed_at:event.created_at}}});
+  assert(opened.includes('Step back from the doorway and get a parent.')); assert(!opened.includes('Keep the door closed. Ask a parent before opening.'));
+});
+console.log(`PASS: ${checks} total static markup checks including Child safety mode.`);
+console.log(`PASS: ${checks} total static markup checks including visit scenario.`);
+check('visit interpretation separates evidence from probability and Qwen', () => {
+  const html=render({...alert,simulation});
+  assert(html.includes('Visit interpretation · application assessment'));
+  assert(html.includes('Urgent rule met'));
+  assert(html.includes('Likelihood of suspicious intent'));
+  assert(html.includes('Not estimated · no calibrated intent or safety probability'));
+  assert(html.includes('Supporting evidence'));
+  assert(html.includes('Missing evidence and uncertainty'));
+  assert(html.includes('Qwen selects supplied evidence'));
+});
+console.log(`PASS: ${checks} total static markup checks including evidence interpretation.`);
+check('saving family reference requires fresh genuine face availability', () => {
+  assert(/disabled="">Save my face as Family member/.test(render({camera:'monitoring',frame})));
+  const html=render({camera:'monitoring',frame:{...frame,features:{face:{state:'available'}}}});
+  assert(!/disabled="">Save my face as Family member/.test(html));
+  assert(html.includes('stored and compared locally using LBPH'));
+});
+check('saved family reference has explicit preview/delete controls', () => {
+  const html=render({status:{...base.status,family_reference:{category:'Family member',sequence:1,created_at:event.created_at}}});
+  assert(html.includes('View captured face')); assert(html.includes('Delete face · try Unknown'));
+  assert(!html.includes('Save my face as Family member'));
+});
+console.log(`PASS: ${checks} total static markup checks including local family reference.`);
+
+check('face demo has only two scenarios and no activity controls', () => {
+  const html=render({});
+  assert(html.includes('1. Learn a family member')); assert(html.includes('2. Try an unknown visitor'));
+  for (const removed of ['Simulate bell','Simulate impact','Simulate door open','Rule progress','Confirm visitor category']) assert(!html.includes(removed));
+  assert(html.indexOf('simulation-column') < html.indexOf('camera-panel'));
+});
+check('fresh family match gives child guidance without arming or activity', () => {
+  const html=render({camera:'monitoring',status:{...base.status,demo_mode:'face_enrollment',armed:true},frame:{...frame,features:{face:{state:'available'}},recognition:{category:'Family member',state:'matched',sequence:frame.sequence,captured_at:frame.captured_at,distance:10,threshold:65,message:'Matched.'}}});
+  assert(html.includes('Family member · familiar visitor')); assert(html.includes('Ask a parent before opening'));
+  assert(html.includes('Face distance 10.00')); assert(!html.includes('Likelihood of suspicious intent'));
+  assert(!html.includes('Child safety mode is off'));
+  assert(html.includes('Supervised face learning')); assert(html.includes('Supervised face learning'));
+  assert(html.includes('Face comparison result')); assert(html.includes('Match at ≤ 65')); 
+  assert(!html.includes('role="tablist"')); assert(html.includes('Training time')); assert(html.includes('AI Analysis'));
+  assert(html.includes('not a probability')); assert(html.includes('camera-alert-banner monitoring'));
+});
+console.log(`PASS: ${checks} total static markup checks including two-scenario camera demo.`);
+check('mode off retains recognition without a child alert or tabs', () => {
+  const html=render({camera:'monitoring',status:{...base.status,demo_mode:'face_enrollment',armed:false},frame:{...frame,features:{face:{state:'available'}},recognition:{state:'matched',category:'Family member',sequence:frame.sequence,captured_at:frame.captured_at,distance:53.70,threshold:65,message:'Matched.'}}});
+  assert(html.includes('Family member · familiar visitor'));
+  assert(html.includes('Child safety mode off · recognition only'));
+  assert(!html.includes('role="tablist"')); assert(!html.includes('>Select evidence</button>'));
+  assert(!html.includes('Keep the door closed. Get a parent.'));
+});
+check('unknown banner and borderline explanation follow the actual comparison', () => {
+  const html=render({camera:'monitoring',status:{...base.status,demo_mode:'face_enrollment',armed:true},frame:{...frame,features:{face:{state:'available'}},recognition:{state:'unmatched',category:'Unknown',sequence:frame.sequence,captured_at:frame.captured_at,distance:68,threshold:65,message:'Unmatched.'}}});
+  assert(html.includes('Unknown visitor · keep the door closed and get a parent'));
+  assert(html.includes('Match rejected')); assert(html.includes('Close to the cutoff'));
+});
+console.log(`PASS: ${checks} final static markup checks including automatic unified analysis and camera banners.`);

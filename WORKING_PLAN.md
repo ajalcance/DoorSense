@@ -1,6 +1,25 @@
 # DoorSense working plan
 
-Updated: 2026-10-09, Asia/Manila.
+## Current approved demo scope
+
+The current submission uses real laptop-camera person/face inference, one
+parent-enrolled Family member reference, LBPH appearance matching and Unknown
+results after deletion or rejection. Parents control Child safety mode. Live
+camera banners and one automatic AI Analysis view present guidance and measured
+matching evidence; there are no sensor/activity simulation controls or manual
+category selections. Learning is explicit supervised enrollment, not RL.
+
+See the [technical overview](docs/TECHNICAL_OVERVIEW.md) for what works now,
+validation limits and three focused next steps: evaluated recognition reliability,
+additional parent-confirmed household examples and supported household deployment.
+The [runbook](demo/DEMO_RUNBOOK.md) is the current demo sequence.
+
+## Historical product planning (superseded for this demo)
+
+The following records earlier scope and implementation discussions. It does not
+reactivate sensor simulations, manual labels, tabs or autonomous learning claims.
+
+Updated: 2026-10-10, Asia/Manila.
 
 ## Approved product direction
 
@@ -13,8 +32,12 @@ The selected prototype uses the laptop webcam, local inference, and a modern
 indoor console shown on an external display. The laptop is an Apple M1 with
 8 GB unified memory. Qwen3 0.6B via Ollama is approved for local explanations
 and resident questions. Remaining dependency choices require preflight.
-No application code, working model
-integration, hardware integration, or security effectiveness has been demonstrated.
+The initial webcam/person-detection spike has passed basic owner acceptance.
+The bounded Qwen adapter is implemented: four genuine supported examples worked;
+the application guards unsupported questions after model abstention failed.
+Free-text/history questions remain target scope, not current capability.
+Broader detection quality, live failure handling, integrated application behaviour,
+hardware integration and product security effectiveness remain unverified.
 
 Document responsibilities:
 
@@ -102,7 +125,7 @@ remain visible as an uncertain or unavailable monitoring state.
 | 4. Household adaptation | Resident feedback, zones, routines, periodic model improvements | Reduce nuisance alerts on separate test data without increasing missed important events |
 | 5. Adaptive product | Bounded notification learning, dedicated local hub, mobile interface, authenticated access, retention controls | Compare versions, test failure states, support rollback |
 
-No application stage is currently implemented or accepted. The hackathon prototype should
+The initial camera/detector spike has passed basic owner acceptance. The hackathon prototype should
 demonstrate a bounded part of this roadmap, not claim the complete product.
 
 ## Learning strategy
@@ -150,10 +173,18 @@ The user endorsed a modern indoor console as the main resident-facing product.
 For the selected demo approach, the laptop webcam represents the exterior camera, local
 inference runs on the laptop, and an external display shows the indoor console.
 This is camera substitution; ESP32 emulation may only be claimed if firmware
-actually executes in an emulator. No console or model integration exists yet.
+actually executes in an emulator. Camera/vision and bounded Qwen spikes exist;
+console/event/storage source is implemented, with partial owner webcam/Qwen
+integration evidence. Optional scene features and the interactive dashboard are
+implemented; new model and full live/offline acceptance remain pending.
 
-Console layout: a large live view, prominent event status, concise analysis,
-supporting observations, resident controls, and a compact recent-event timeline.
+Approved simulation-console layout: persistent left simulation controls/settings,
+a somewhat smaller middle live camera, and right assessment/Scene/Qwen/Evidence.
+Overview/Events navigation and grouped global controls live in the header.
+Simulation inputs stay visible while analysis updates; backend state supplies
+contact/progress/timing after refresh. Diagnostics remains an optional overlay.
+Events retains the saved history/evidence workspace. This layout is implemented;
+rendered fit and live interaction acceptance remain pending.
 Use readable typography, restrained overlays, clear labels, and smooth state
 transitions. Technical diagnostics belong in an expandable panel.
 
@@ -230,11 +261,19 @@ Source: AppBuildersPH Hackathon 2026 Participant Briefing.pdf (supplied by the p
 
 ## Next action
 
-Preflight the remaining stack and local assets for the M1 8 GB laptop, then
-build genuine camera/vision and Qwen inference spikes. Follow the ordered build
-checkpoints and publishable integration evidence: real local calls, prompts,
-fallbacks, model disclosures and offline reproduction instructions. Record
-actual measurements and distinguish the roadmap from verified capabilities.
+The owner expanded scope through Slice 10 and approved an interactive local-AI
+dashboard and lightweight family demo. Slice 8 scene code is implemented; Slice 9
+acceptance tooling and Slice 10 reproduction/demo materials are prepared.
+[Current commands/contracts](docs/SLICES_8_10.md) and [audit](docs/SLICES_8_10_AUDIT.md)
+separate source checks from genuine face/pose quality and offline acceptance.
+No new model acquisition, capture/service startup, Git mutation or publication
+was performed. Camera boxes are frame-local detections, not identity tracking.
+Green face availability does not recognize family or establish permission to open;
+grey is limited availability; amber/red remain defined event-rule severities.
+Owner-confirmed snapshot labels are explicit manual facts. The demo prioritises
+actual vision outputs and a genuine local Qwen evidence selection, then disconnected
+restart and failure resilience. The owner declined a heavier VLM path; cap/glasses
+classification, automatic family recognition and emotion inference are not delivered.
 Organiser acceptance of simulated sensors remains unresolved.
 
 ## Technical references
@@ -254,3 +293,12 @@ Organiser acceptance of simulated sensors remains unresolved.
 - https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html
 - https://onnxruntime.ai/docs/
 - https://vowpalwabbit.org/docs/vowpal_wabbit/python/latest/tutorials/python_Contextual_bandits_and_Vowpal_Wabbit.html
+
+## Parent-enabled child mode and combined visit demo
+
+Approved 2026-10-10: optional Child safety mode enabled manually by parents,
+with one visit workflow and only Family member/Unknown snapshot categories.
+Urgent review combines fresh genuine person detection and three simulated impacts
+on a closed door within five seconds, before it opens. Visitor identity/intent
+are not inferred. Manual family confirmation does not suppress activity alerts.
+Automatic family database matching/action recognition are outside current scope.
