@@ -1,0 +1,49 @@
+# macOS and editors
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Frontend build and dependency output
+node_modules/
+dist/
+coverage/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local state, logs, recordings and private reference material
+private/
+data/
+recordings/
+logs/
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+
+# Downloaded model assets (inventory and acquisition docs belong in Git)
+assets/models/
+*.gguf
+*.safetensors
+*.onnx
+*.tflite
+*.task
+*.pt
+*.pth
